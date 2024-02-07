@@ -32,7 +32,7 @@ class BookSeeder extends Seeder
 
         for ($i = 0; $i < 4; $i++) {
             $book = new Book();
-            $book->title = $faker->realText($maxNbChars = 30, $indexSize = 1);
+            $book->title = $faker->sentence(4, true);
             $book->author = $faker->name();
             $book->isbn = $faker->isbn13();
             $book->plot = $faker->paragraph(3);
