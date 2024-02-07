@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('google_id', 100)->nullable();
 
-            $table->string('title', 200)->nullable();
-            $table->string('author', 100)->nullable();
+            $table->string('title', 100)->nullable();
+            $table->string('author', 50)->nullable();
             $table->string('isbn', 13)->nullable();
             $table->text('plot')->nullable();
 
