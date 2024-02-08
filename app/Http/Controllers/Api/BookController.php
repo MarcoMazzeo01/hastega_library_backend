@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
@@ -38,7 +39,7 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::get($id);
+        $book = Book::findOrFail($id);
         return response()->json($book);
     }
 
