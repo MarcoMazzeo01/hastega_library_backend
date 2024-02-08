@@ -46,12 +46,4 @@ class UserFactory extends Factory
             ];
         });
     }
-
-    public function configure()
-    {
-        return $this->afterMaking(function (User $user) {
-            // Code to run after making a user.
-        })->afterCreating(function (User $user) {
-        });
-    }
 }
