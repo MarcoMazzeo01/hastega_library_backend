@@ -30,6 +30,10 @@ class LibraryController extends Controller
         $user = User::FindOrFail($userId);
         $bookId = $request->input('bookId');
 
+        if ($user->books()->where($bookId)) {
+            return response()->json(['message' => 'Book already exists!']);
+        }
+
         $user->books()->attach($bookId, ['created_at' => now()]);
 
         return response()->json(['message' => 'Book saved successfully']);
