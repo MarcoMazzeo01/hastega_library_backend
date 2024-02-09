@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use App\Models\User;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LibraryController extends Controller
 {
@@ -34,6 +37,8 @@ class LibraryController extends Controller
             return response()->json(['message' => 'Book already exists!']);
         } else { //if doesn't exist, add to library
             $user->books()->attach($bookId, ['created_at' => now()]);
+            $book = Book::where('id', $bookId);
+            $book->increment('reads', 1);
             return response()->json(['message' => 'Book saved successfully']);
         }
     }
