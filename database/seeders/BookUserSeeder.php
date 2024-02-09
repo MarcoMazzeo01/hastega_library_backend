@@ -21,7 +21,7 @@ class BookUserSeeder extends Seeder
         $books = Book::all()->pluck('id')->toArray();
 
         foreach ($users as $user) {
-            $user->books()->attach($faker->randomElements($books, random_int(1, 6)));
+            $user->books()->attach($faker->randomElements($books, random_int(1, 6)),  ['created_at' => now()]);
         }
     }
 }
