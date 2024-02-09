@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('google_id', 100)->nullable();
 
             $table->string('title', 100)->nullable();
+            $table->integer('reads', false, true)->default(0);
             $table->string('author', 50)->nullable();
             $table->string('isbn', 13)->nullable();
             $table->text('plot')->nullable();
