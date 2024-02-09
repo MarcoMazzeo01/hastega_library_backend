@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Log;
 
 class BookUserSeeder extends Seeder
 {
@@ -21,7 +22,14 @@ class BookUserSeeder extends Seeder
         $books = Book::all()->pluck('id')->toArray();
 
         foreach ($users as $user) {
-            $user->books()->attach($faker->randomElements($books, random_int(1, 6)),  ['created_at' => now()]);
+            $randomBooks = $faker->randomElements($books, random_int(1, 5), false);
+            Log::alert($randomBooks);
+            $user->books()->attach($randomBooks,  ['created_at' => now()]);
+
+            foreach ($randomBooks as $bookId) {
+                $book = Book::where('id', $bookId);
+                $book->increment('reads', 1);
+            }
         }
     }
 }
