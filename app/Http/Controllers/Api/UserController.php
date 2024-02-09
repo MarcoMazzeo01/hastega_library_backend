@@ -39,6 +39,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
+        $user_books = $user->books; //access it now from the model, so it can be added to the json automatically
         return response()->json($user);
     }
 
