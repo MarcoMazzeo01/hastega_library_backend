@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use Faker\Calculator\Isbn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -29,6 +30,11 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
+        if (Book::where('isbn', $data['isbn'])->exists()) {
+            return response("Book already exists; can't create duplicate.");
+        }
+
         $book = new Book;
         $book->fill($data);
         $book->save();
