@@ -47,6 +47,6 @@ class User extends Authenticatable
 
     public function books()
     {
-        return $this->belongsToMany(Book::class)->using(Library::class);
+        return $this->belongsToMany(Book::class)->using(Library::class)->whereNull('book_user.deleted_at');
     }
 }
