@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Book::class)->using(Library::class)->whereNull('book_user.deleted_at');
     }
+
+    public function getTrashedBooks()
+    {
+        return $this->belongsToMany(Book::class)->using(Library::class)->withPivot('deleted_at', 'id');
+    }
 }
