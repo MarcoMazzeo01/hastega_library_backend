@@ -27,13 +27,24 @@ class LibraryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $userId = $request->input('userId'); // Get the user
         $user = User::FindOrFail($userId);
         $bookId = $request->input('bookId');
+        $libraryEntry = $user->getTrashedBooks()->where('book_id', $bookId);
 
-        if ($user->books()->where('book_id', $bookId)->exists()) { //if book already exists in user library
+        if ($libraryEntry->exists()) { //if book already exists in user library
+
+            if ($libraryEntry->first()->pivot->deleted_at !== null) {
+
+                $libraryEntry->first()->pivot->update(['deleted_at' => null]);
+                return response()->json(['message' => 'Book added back to user library;']);
+            } else {
+                return  response()->json(['message' => $libraryEntry->first()]);
+            }
+
             return response()->json(['message' => 'Book already exists!']);
         } else { //if doesn't exist, add to library
             $user->books()->attach($bookId, ['created_at' => now()]);
@@ -42,6 +53,7 @@ class LibraryController extends Controller
             return response()->json(['message' => 'Book saved successfully']);
         }
     }
+
 
     /**
      * Display the specified resource.
