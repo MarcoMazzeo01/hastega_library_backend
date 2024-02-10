@@ -6,7 +6,8 @@ use App\Models\Book;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BookSeeder extends Seeder
 {
@@ -27,6 +28,14 @@ class BookSeeder extends Seeder
         foreach ($google_ids as $id) {
             $book = new Book();
             $book->google_id = $id;
+
+            $response = Http::get('https://www.googleapis.com/books/v1/volumes/' . $id);
+            $isbn = $response["volumeInfo"]["industryIdentifiers"][1]['identifier'];
+
+            if ($isbn) {
+                $book->isbn = $isbn;
+            }
+
             $book->save();
         }
 
