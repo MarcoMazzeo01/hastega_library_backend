@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = ['title', 'author', 'isbn', 'plot'];
 
