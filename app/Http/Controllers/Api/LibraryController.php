@@ -63,7 +63,6 @@ class LibraryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
@@ -74,6 +73,21 @@ class LibraryController extends Controller
      */
     public function destroy($id)
     {
-        //
+    }
+
+
+    public function removeFromLibrary($userId, $bookId)
+    {
+        // Find the user
+        $user = User::findOrFail($userId);
+
+        // Find the pivot record for the user and book
+        $pivotRecord = $user->books()->where('book_id', $bookId)->first()->pivot;
+
+        // Soft delete the pivot record
+        $pivotRecord->update(['deleted_at' => now()]);
+
+        // Return a success message or response
+        return response()->json(['message' => 'Book removed from library successfully']);
     }
 }
