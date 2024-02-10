@@ -26,3 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('books', BookController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('library', LibraryController::class);
+
+
+Route::delete('/library/{userId}/{bookId}', [LibraryController::class, 'removeFromLibrary']);
+//Route::post('/library/{userId}/{bookId}/restore', [LibraryController::class, 'restoreToLibrary']);
