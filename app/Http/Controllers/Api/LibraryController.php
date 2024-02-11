@@ -37,16 +37,17 @@ class LibraryController extends Controller
 
         if ($libraryEntry->exists()) { //if book already exists in user library
 
+            //if book is softdeleted, restore
             if ($libraryEntry->first()->pivot->deleted_at !== null) {
 
                 $libraryEntry->first()->pivot->update(['deleted_at' => null]);
+                $libraryEntry->increment('reads', 1);
                 return response()->json(['message' => 'Book added back to user library;']);
-            } else {
-                return  response()->json(['message' => $libraryEntry->first()]);
             }
 
             return response()->json(['message' => 'Book already exists!']);
-        } else { //if doesn't exist, add to library
+        } else {
+            //if doesn't exist, add to library
             $user->books()->attach($bookId, ['created_at' => now()]);
             $book = Book::where('id', $bookId);
             $book->increment('reads', 1);
@@ -98,6 +99,11 @@ class LibraryController extends Controller
 
         // Soft delete the pivot record
         $pivotRecord->update(['deleted_at' => now()]);
+
+        //Decrease reads number
+        $book = Book::where('id', $bookId);
+        $book->decrement('reads', 1);
+
 
         // Return a success message or response
         return response()->json(['message' => 'Book removed from library successfully']);
